@@ -15,7 +15,7 @@ function App() {
     setMessage("");
     setLoading(true);
 
-    const res = await fetch("http://localhost:5000/analyze", {
+    const res = await fetch("https://your-render-url.onrender.com/analyze", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
