@@ -24,7 +24,7 @@ This project provides an AI assistant that analyzes user queries and gives real-
 - Cloud deployed system
 
 ##  Live Demo
-Frontend: [https://your-vercel-link  ](https://ai-job-application-assistant-6tot5qpzd-devi-p-22s-projects.vercel.app/)Backend: https://ai-job-application-assistantt1.onrender.com/
+Frontend: https://ai-job-application-assistant-mu.vercel.app/ Backend: https://ai-job-application-assistantt1.onrender.com
 
 ## Loom Video
 Link : https://www.loom.com/share/e8e6e06cd6564a66a0c48fd3740f2e4d
