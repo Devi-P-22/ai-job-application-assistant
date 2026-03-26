@@ -1,4 +1,5 @@
 require("dotenv").config();
+
 const express = require("express");
 const cors = require("cors");
 const axios = require("axios");
@@ -21,7 +22,8 @@ app.post("/analyze", async (req, res) => {
     const response = await axios.post(
       "https://openrouter.ai/api/v1/chat/completions",
       {
-        model: "openai/gpt-3.5-turbo",
+        // safer free model
+        model: "mistralai/mistral-7b-instruct",
         messages: [
           {
             role: "user",
@@ -37,15 +39,19 @@ app.post("/analyze", async (req, res) => {
       }
     );
 
+    // Debug log (helps if error)
+    console.log("AI FULL RESPONSE:", response.data);
+
     const aiResponse =
-      response.data.choices?.[0]?.message?.content || "No response from AI";
+      response.data.choices?.[0]?.message?.content ||
+      "No response from AI";
 
     res.json({
       reply: aiResponse
     });
 
   } catch (error) {
-    console.log(error.response?.data || error.message);
+    console.log("ERROR:", error.response?.data || error.message);
 
     res.status(500).json({
       reply: "Server error"
@@ -53,7 +59,7 @@ app.post("/analyze", async (req, res) => {
   }
 });
 
-// PORT FIX (correct already)
+// IMPORTANT for deployment
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
