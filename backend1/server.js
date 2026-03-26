@@ -23,7 +23,7 @@ app.post("/analyze", async (req, res) => {
       "https://openrouter.ai/api/v1/chat/completions",
       {
         // safer free model
-        model: "mistralai/mistral-7b-instruct",
+        model: "openai/gpt-3.5-turbo",
         messages: [
           {
             role: "user",
