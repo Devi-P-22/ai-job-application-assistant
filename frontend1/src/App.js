@@ -42,7 +42,7 @@ function App() {
 
     try {
       // ✅ IMPORTANT: Use your deployed backend URL here
-      const res = await fetch("https://ai-job-application-assistantt1.onrender.com/", {
+      const res = await fetch("https://ai-job-application-assistantt1.onrender.com/analyze", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
