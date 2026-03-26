@@ -41,6 +41,7 @@ function App() {
     setLoading(true);
 
     try {
+      // ✅ IMPORTANT: Use your deployed backend URL here
       const res = await fetch("https://ai-job-application-assistantt1.onrender.com", {
         method: "POST",
         headers: {
@@ -51,7 +52,6 @@ function App() {
 
       const data = await res.json();
 
-      // Add empty bot message first
       setChat([...newChat, { type: "bot", text: "" }]);
       setLoading(false);
 
@@ -66,7 +66,10 @@ function App() {
 
     } catch (error) {
       setLoading(false);
-      setChat([...newChat, { type: "bot", text: "⚠️ Error connecting to server" }]);
+      setChat([
+        ...newChat,
+        { type: "bot", text: "Error connecting to server" },
+      ]);
     }
   };
 
@@ -83,9 +86,9 @@ function App() {
 
         {/* Header */}
         <div className="header">
-          <h1>🤖 AI Assistant</h1>
+          <h1>AI Assistant</h1>
           <button className="toggle" onClick={() => setDark(!dark)}>
-            {dark ? "☀️" : "🌙"}
+            {dark ? "Light" : "Dark"}
           </button>
         </div>
 
@@ -93,14 +96,14 @@ function App() {
         <div className="chat">
           {chat.map((msg, i) => (
             <div key={i} className={`msg ${msg.type}`}>
-              {msg.type === "user" ? "🧑 " : "🤖 "}
+              {msg.type === "user" ? "User: " : "Bot: "}
               {msg.text}
             </div>
           ))}
 
           {loading && (
             <div className="msg bot typing">
-              🤖 <span className="dots"></span>
+              Bot: typing...
             </div>
           )}
 
@@ -115,7 +118,7 @@ function App() {
             onKeyDown={handleKeyDown}
             placeholder="Ask anything..."
           />
-          <button onClick={sendMessage}>➤</button>
+          <button onClick={sendMessage}>Send</button>
         </div>
 
       </div>
