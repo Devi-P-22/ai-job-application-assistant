@@ -9,18 +9,18 @@ app.use(express.json());
 
 // Test route
 app.get("/", (req, res) => {
-  res.send("Server is working 🚀");
+  res.send("Server is working");
 });
 
 // MAIN API
 app.post("/analyze", async (req, res) => {
   try {
-    const { prompt } = req.body;
+    const { message } = req.body;
 
     const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
       method: "POST",
       headers: {
-        "Authorization": `Bearer ${process.env.OPENAI_API_KEY}`,
+        "Authorization": `Bearer ${process.env.OPENROUTER_API_KEY}`,
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
@@ -28,7 +28,7 @@ app.post("/analyze", async (req, res) => {
         messages: [
           {
             role: "user",
-            content: prompt
+            content: message
           }
         ]
       })
@@ -51,6 +51,9 @@ app.post("/analyze", async (req, res) => {
   }
 });
 
-app.listen(5000, () => {
-  console.log("Server running on port 5000");
+// IMPORTANT FIX FOR RENDER
+const PORT = process.env.PORT || 5000;
+
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
 });
