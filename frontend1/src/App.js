@@ -41,7 +41,7 @@ function App() {
     setLoading(true);
 
     try {
-      const res = await fetch("http://localhost:5000/analyze", {
+      const res = await fetch("https://ai-job-application-assistantt1.onrender.com", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
