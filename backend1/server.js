@@ -1,8 +1,6 @@
 require("dotenv").config();
-
 const express = require("express");
 const cors = require("cors");
-const axios = require("axios");
 
 const app = express();
 
@@ -11,53 +9,48 @@ app.use(express.json());
 
 // Test route
 app.get("/", (req, res) => {
-  res.send("Server is working");
+  res.send("Server is working 🚀");
 });
 
-// AI API route
+// MAIN API
 app.post("/analyze", async (req, res) => {
   try {
-    const { message } = req.body;
+    const { prompt } = req.body;
 
-    const response = await axios.post(
-      "https://openrouter.ai/api/v1/chat/completions",
-      {
+    const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        "Authorization": `Bearer ${process.env.OPENAI_API_KEY}`,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
         model: "openai/gpt-3.5-turbo",
         messages: [
           {
-            role: "system",
-            content: "You are a helpful AI assistant. Give short, clear answers."
-          },
-          {
             role: "user",
-            content: message
+            content: prompt
           }
         ]
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${process.env.OPENROUTER_API_KEY}`,
-          "Content-Type": "application/json"
-        }
-      }
-    );
+      })
+    });
+
+    const data = await response.json();
+
+    const aiResponse =
+      data.choices?.[0]?.message?.content || "No response from AI";
 
     res.json({
-      reply: response.data.choices[0].message.content
+      reply: aiResponse
     });
 
   } catch (error) {
-    console.log(error.response?.data || error.message);
-
-    res.json({
-      reply: "Error from AI"
+    console.log(error);
+    res.status(500).json({
+      reply: "Server error"
     });
   }
 });
 
-// Important for deployment
-const PORT = process.env.PORT || 5000;
-
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+app.listen(5000, () => {
+  console.log("Server running on port 5000");
 });
