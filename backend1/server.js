@@ -11,10 +11,10 @@ app.use(express.json());
 
 // Test route
 app.get("/", (req, res) => {
-  res.send("Server is working 🚀");
+  res.send("Server is working");
 });
 
-// ✅ AI API using OpenRouter (FREE)
+// AI API route
 app.post("/analyze", async (req, res) => {
   try {
     const { message } = req.body;
@@ -22,7 +22,7 @@ app.post("/analyze", async (req, res) => {
     const response = await axios.post(
       "https://openrouter.ai/api/v1/chat/completions",
       {
-        model: "openai/gpt-3.5-turbo", // free model
+        model: "openai/gpt-3.5-turbo",
         messages: [
           {
             role: "system",
@@ -36,26 +36,27 @@ app.post("/analyze", async (req, res) => {
       },
       {
         headers: {
-          Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
+          Authorization: `Bearer ${process.env.OPENROUTER_API_KEY}`,
           "Content-Type": "application/json"
         }
       }
     );
-
-    console.log("✅ AI RESPONSE:", response.data);
 
     res.json({
       reply: response.data.choices[0].message.content
     });
 
   } catch (error) {
-    console.log("❌ ERROR:", error.response?.data || error.message);
+    console.log(error.response?.data || error.message);
 
     res.json({
-      reply: "Error from AI ❌"
+      reply: "Error from AI"
     });
   }
 });
+
+// Important for deployment
+const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
